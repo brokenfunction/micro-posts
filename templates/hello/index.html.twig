@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% if messages|length > 0 %}
+        <ol>
+        {% for key,message in messages|slice(0, limit) %}
+            <li>
+                <a href="{{ path('app_show_one', {id:key}) }}">{{ message.message }}</a>
+                {{ include('hello/_message.html.twig') }}
+            </li>
+        {% endfor %}
+        </ol>
+    {% else %}
+        <p>Nothing to display</p>
+    {% endif %}
+{% endblock %}
+
