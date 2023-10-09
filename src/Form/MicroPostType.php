@@ -14,8 +14,7 @@ class MicroPostType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('text')
-            ->add('submit', SubmitType::class, ['label' => 'Save']);
+            ->add('text');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
