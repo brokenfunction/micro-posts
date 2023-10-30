@@ -4,7 +4,9 @@ namespace App\Security;
 
 use App\Entity\User;
 use DateTime;
-use Symfony\Component\HttpFoundation\File\Exception\AccessDeniedException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -17,6 +19,9 @@ class UserChecker implements UserCheckerInterface
      */
     public function checkPreAuth(UserInterface $user): void
     {
+        if (!$user->isVerified()) {
+            //throw new AccessDeniedException('Your user account no verified.');
+        }
         if (null === $user->getBannedUntil()) {
             return;
         }
@@ -24,6 +29,7 @@ class UserChecker implements UserCheckerInterface
         if ($now < $user->getBannedUntil()) {
             throw new AccessDeniedException('The user is banned.');
         }
+
     }
 
     /**
