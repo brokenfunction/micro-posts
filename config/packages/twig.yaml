@@ -3,6 +3,8 @@ twig:
     form_themes:
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
         - 'form/fields.html.twig'
+    globals:
+        profiles: '%profiles%'
 
 when@test:
     twig:

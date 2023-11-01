@@ -16,11 +16,8 @@ class MicroPostType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('text', CKEditorType::class, [
-                'config' => [
-                    'uiColor' => '#ffffff',
-                ],
-            ]);
+            ->add('text', TextareaType::class)
+            ->add('extraPrivacy');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
