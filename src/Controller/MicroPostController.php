@@ -9,10 +9,8 @@ use App\Form\CommentType;
 use App\Form\MicroPostType;
 use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
-use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,7 +29,7 @@ class MicroPostController extends AbstractController
     public function topLiked(MicroPostRepository $posts): Response
     {
         return $this->render('micro_post/top_liked.html.twig', [
-            'posts' => $posts->findAllWithMinLikes(1)
+            'posts' => $posts->findAllWithMinLikes(5)
         ]);
     }
 

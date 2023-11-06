@@ -20,7 +20,7 @@ class CommentFixture extends Fixture implements DependentFixtureInterface
         for ($i = 0; $i <= 200; $i++) {
             $comment = new Comment();
             $comment->setText($generator->realText(100));
-            $comment->setCreated($generator->dateTime());
+            $comment->setCreated($generator->dateTimeThisYear());
             $comment->setAuthor($generator->randomElement($users));
             $comment->setPost($generator->randomElement($posts));
             $manager->persist($comment);

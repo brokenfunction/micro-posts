@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\User;
 use App\Entity\UserProfile;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
@@ -19,6 +20,23 @@ class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $generator = Factory::create();
+
+        $admin = new User();
+        $admin->setEmail('admin@micropost.com');
+        $admin->setPassword($this->userPasswordHasher->hashPassword($admin, '123456'));
+        $admin->setIsVerified(true);
+        $adminProfile = new UserProfile();
+        $adminProfile->setName('John Doe');
+        $adminProfile->setBio('Cool as cucumber');
+        $adminProfile->setTwitterUsername('twitter');
+        $adminProfile->setWebsiteUrl('http://127.0.0.1/');
+        $adminProfile->setCompany('IT Company');
+        $adminProfile->setLocation('Ukraine');
+        $adminProfile->setDateOfBirth(new DateTime('1995-04-24'));
+        $adminProfile->setImage('photo-2023-10-23-11-35-35-65426bf6af06d.jpg');
+        $admin->setUserProfile($adminProfile);
+        $manager->persist($admin);
+
         for ($i = 0; $i <= 30; $i++) {
             $user = new User();
             $user->setEmail($generator->email);
