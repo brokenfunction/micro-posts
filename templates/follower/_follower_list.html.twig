@@ -5,7 +5,7 @@
                 <div>
                     <a href="{{ path('app_profile', { id: otherUser.id }) }}">
                         <div class="text-lg">
-                            {{ other.userProfile.name ?? otherUser.email }}
+                            {{ otherUser.userProfile.name ?? otherUser.email }}
                         </div>
                         <div class="text-gray-500">
                             {{ otherUser.email }}
