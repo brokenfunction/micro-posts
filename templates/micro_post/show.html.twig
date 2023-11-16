@@ -56,6 +56,9 @@
                         <div>
                             <div>
                                 {{ comment.text }}
+                                {% if comment.edited is not null %}
+                                    <span class="text-sm text-gray-500 dark:text-gray-400 italic">(edited {{ comment.edited| date("M j, Y, g:i a") }})</span>
+                                {% endif %}
                             </div>
                             {% if is_granted('IS_AUTHENTICATED_FULLY') and comment.author.id == app.user.id %}
                                 <div class="hidden group-hover:block">

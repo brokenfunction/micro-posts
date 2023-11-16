@@ -1,6 +1,11 @@
 <div class="mb-4">
     <div class="text-3xl">
-        <h1>{{ post.title }}</h1>
+        <h1 class="break-all">
+            {{ post.title }}
+            {% if post.edited is not null %}
+                <span class="text-sm text-gray-500 dark:text-gray-400 italic">(edited {{ post.edited| date("M j, Y, g:i a") }})</span>
+            {% endif %}
+        </h1>
     </div>
     <div class="text-xl dark:text-gray-400 mt-2">
         {{ post.text }}

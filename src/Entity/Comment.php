@@ -32,6 +32,9 @@ class Comment
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $created = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $edited = null;
+
     public function __construct()
     {
         $this->created = new DateTime;
@@ -86,6 +89,18 @@ class Comment
     public function setCreated(\DateTimeInterface $created): static
     {
         $this->created = $created;
+
+        return $this;
+    }
+
+    public function getEdited(): ?\DateTimeInterface
+    {
+        return $this->edited;
+    }
+
+    public function setEdited(?\DateTimeInterface $edited): static
+    {
+        $this->edited = $edited;
 
         return $this;
     }

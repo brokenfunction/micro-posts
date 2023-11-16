@@ -47,6 +47,9 @@ class MicroPost
     #[ORM\Column(nullable: false)]
     private ?bool $extraPrivacy = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $edited = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -170,6 +173,18 @@ class MicroPost
     public function setExtraPrivacy(bool $extraPrivacy): static
     {
         $this->extraPrivacy = $extraPrivacy;
+
+        return $this;
+    }
+
+    public function getEdited(): ?\DateTimeInterface
+    {
+        return $this->edited;
+    }
+
+    public function setEdited(?\DateTimeInterface $edited): static
+    {
+        $this->edited = $edited;
 
         return $this;
     }
