@@ -17,8 +17,8 @@ class MicroPostFixtures extends Fixture implements DependentFixtureInterface
         $users = $manager->getRepository(User::class)->findAll();
         for ($i = 0; $i <= 60; $i++) {
             $microPost = new MicroPost();
-            $microPost->setTitle($generator->words(rand(1, 4), true));
-            $microPost->setText($generator->realText(200));
+            $microPost->setTitle($generator->words(rand(2, 4), true));
+            $microPost->setText($generator->realText(300));
             $microPost->setCreated($generator->dateTime());
             $microPost->setAuthor($generator->randomElement($users));
             for ($j = 0; $j <= rand(1,5); $j++) {

@@ -30,6 +30,15 @@ class CommentRepository extends ServiceEntityRepository
         }
     }
 
+    public function remove(Comment $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
 //    /**
 //     * @return Comment[] Returns an array of Comment objects
 //     */

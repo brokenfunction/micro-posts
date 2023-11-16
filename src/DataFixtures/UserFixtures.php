@@ -21,6 +21,19 @@ class UserFixtures extends Fixture
     {
         $generator = Factory::create();
 
+        $images = [
+            'photo-2023-09-03-08-10-10-65563e63b7773.jpg',
+            'photo-2023-10-23-11-33-55-65563e6b74e12.jpg',
+            'photo-2023-10-23-11-36-04-65563e7295329.jpg',
+            'photo-2023-10-23-11-40-57-6542652a3544f.jpg',
+            'photo-2023-11-07-11-22-06-65563e7724f31.jpg',
+            'photo-2023-11-07-11-23-46-65563e7b45e8f.jpg',
+            'photo-2023-11-10-12-53-09-65563e7eee84b.jpg',
+            'photo-2023-11-10-12-53-21-65563e829875e.jpg',
+            'photo-2023-11-16-18-06-15-65563e867296b.jpg',
+            'photo-2023-07-24-23-59-10-65563f2c8245e.jpg',
+        ];
+
         $admin = new User();
         $admin->setEmail('admin@micropost.com');
         $admin->setPassword($this->userPasswordHasher->hashPassword($admin, '123456'));
@@ -48,6 +61,7 @@ class UserFixtures extends Fixture
             $userProfile->setWebsiteUrl($generator->url);
             $userProfile->setCompany($generator->company);
             $userProfile->setLocation($generator->country);
+            $userProfile->setImage($images[array_rand($images)]);
             $userProfile->setDateOfBirth($generator->dateTimeBetween('-50 years', '-18 years'));
             $user->setUserProfile($userProfile);
             $manager->persist($user);

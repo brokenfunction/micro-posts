@@ -46,10 +46,22 @@ class MicroPostController extends AbstractController
 
     #[Route('/micro-post/{post}', name: 'app_micro_post_show')]
     #[IsGranted(MicroPost::VIEW, 'post')]
-    public function showOne(MicroPost $post): Response
+    public function showOne(MicroPost $post, Request $request, CommentRepository $comments): Response
     {
+        $form = $this->createForm(CommentType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comment->setPost($post);
+            $comment->setAuthor($this->getUser());
+            $comments->add($comment, true);
+
+            $this->addFlash('success', 'Your comment have been added');
+            return $this->redirectToRoute('app_micro_post_show', ['post' => $post->getId()]);
+        }
         return $this->render('micro_post/show.html.twig', [
-            'post' => $post
+            'post' => $post,
+            'form' => $form->createView()
         ]);
     }
 
@@ -76,6 +88,19 @@ class MicroPostController extends AbstractController
         ]);
     }
 
+
+    #[Route('/micro-post/remove/{post}', name: 'app_micro_post_remove')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function remove(MicroPost $post, MicroPostRepository $posts): Response
+    {
+        if ($post->getAuthor() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+        $posts->remove($post ,true);
+        $this->addFlash('success', 'Your post have been removed');
+        return $this->redirectToRoute('app_micro_post');
+    }
+
     #[Route('/micro-post/edit/{post}', name: 'app_micro_post_edit')]
     #[IsGranted(MicroPost::EDIT, 'post')]
     public function edit(MicroPost $post, Request $request, MicroPostRepository $posts): Response
@@ -89,7 +114,7 @@ class MicroPostController extends AbstractController
             $posts->add($post, true);
 
             $this->addFlash('success', 'Your micro post have been updated');
-            return $this->redirectToRoute('app_micro_post');
+            return $this->redirectToRoute('app_micro_post_show', ['post' => $post->getId()]);
         }
 
         return $this->renderForm('micro_post/edit.html.twig',
@@ -122,5 +147,46 @@ class MicroPostController extends AbstractController
                 'form' => $form,
                 'post' => $post
             ]);
+    }
+
+    #[Route('/micro-post/edit/comment/{comment}', name: 'app_micro_post_edit_comment')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function editComment(Comment $comment, Request $request, CommentRepository $comments): Response
+    {
+        if ($comment->getAuthor() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        $post = $comment->getPost();
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment = $form->getData();
+            $comments->add($comment, true);
+
+
+            $this->addFlash('success', 'Your comment have been updated');
+            return $this->redirectToRoute('app_micro_post_show', ['post' => $post->getId()]);
+        }
+
+        return $this->renderForm('micro_post/edit_comment.html.twig',
+            [
+                'form' => $form,
+                'comment' => $comment,
+                'post' => $post
+            ]);
+    }
+
+    #[Route('/micro-post/remove/comment/{comment}', name: 'app_micro_post_remove_comment')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function deleteComment(Comment $comment, CommentRepository $comments): Response
+    {
+        if ($comment->getAuthor() !== $this->getUser()) {
+            throw $this->createAccessDeniedException();
+        }
+        $post = $comment->getPost();
+        $comments->remove($comment ,true);
+        $this->addFlash('success', 'Your comment have been removed');
+        return $this->redirectToRoute('app_micro_post_show', ['post' => $post->getId()]);
     }
 }

@@ -34,6 +34,15 @@ class MicroPostRepository extends ServiceEntityRepository
         }
     }
 
+    public function remove(MicroPost $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->remove($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
+
     public function findAllWithComments(): array
     {
         return $this->findAllQuery(
