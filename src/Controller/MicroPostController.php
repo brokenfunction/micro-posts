@@ -9,40 +9,40 @@ use App\Form\CommentType;
 use App\Form\MicroPostType;
 use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
+use App\Service\PaginatorService;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Validator\Constraints\Date;
 
 class MicroPostController extends AbstractController
 {
     #[Route('/micro-post', name: 'app_micro_post')]
-    public function index(MicroPostRepository $posts): Response
+    public function index(Request $request, PaginatorService $paginatorService, MicroPostRepository $posts): Response
     {
         return $this->render('micro_post/index.html.twig', [
-            'posts' => $posts->findAllWithComments()
+            'posts' => $paginatorService->paginate($posts->findAllWithComments(), $request)
         ]);
     }
 
     #[Route('/micro-post/top-liked', name: 'app_micro_post_topliked')]
-    public function topLiked(MicroPostRepository $posts): Response
+    public function topLiked(Request $request, PaginatorService $paginatorService, MicroPostRepository $posts): Response
     {
         return $this->render('micro_post/top_liked.html.twig', [
-            'posts' => $posts->findAllWithMinLikes(5)
+            'posts' => $paginatorService->paginate($posts->findAllWithMinLikes(5), $request)
         ]);
     }
 
     #[Route('/micro-post/follows', name: 'app_micro_post_follows')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function follows(MicroPostRepository $posts): Response
+    public function follows(MicroPostRepository $posts, PaginatorService $paginatorService, Request $request): Response
     {
         /** @var User $currentUser */
         $currentUser = $this->getUser();
         return $this->render('micro_post/follows.html.twig', [
-            'posts' => $posts->findAllByAuthors($currentUser->getFollows())
+            'posts' => $paginatorService->paginate($posts->findAllByAuthors($currentUser->getFollows()), $request)
         ]);
     }
 

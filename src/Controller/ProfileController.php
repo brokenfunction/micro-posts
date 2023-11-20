@@ -4,18 +4,20 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Repository\MicroPostRepository;
+use App\Service\PaginatorService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProfileController extends AbstractController
 {
     #[Route('/profile/{id}', name: 'app_profile')]
-    public function index(User $user, MicroPostRepository $posts): Response
+    public function index(User $user, MicroPostRepository $posts, PaginatorService $paginatorService, Request $request): Response
     {
         return $this->render('profile/show.html.twig', [
             'user' => $user,
-            'posts' => $posts->findAllByAuthor($user)
+            'posts' => $paginatorService->paginate($posts->findAllByAuthor($user), $request)
         ]);
     }
 

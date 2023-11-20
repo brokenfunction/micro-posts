@@ -84,18 +84,12 @@ class MicroPostRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult(Query::HYDRATE_SCALAR_COLUMN);
 
-        return $this->findAllQuery(
-            withComments: true,
-            withLikes: true,
-            withAuthors: true,
-            withProfiles: true
-        )->where('p.id IN (:idList)')
-            ->setParameter('idList', $idList)
-            ->getQuery()
+        return $this->findAllQuery()->where('p.id IN (:idList)')
+            ->setParameter('idList', $idList)->getQuery()
             ->getResult();
     }
 
-    private function findAllQuery(
+    public function findAllQuery(
         bool $withComments = false,
         bool $withLikes = false,
         bool $withAuthors = false,
@@ -123,29 +117,4 @@ class MicroPostRepository extends ServiceEntityRepository
 
         return $query->orderBy('p.created', 'DESC');
     }
-
-//    /**
-//     * @return MicroPost[] Returns an array of MicroPost objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('m.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
-
-//    public function findOneBySomeField($value): ?MicroPost
-//    {
-//        return $this->createQueryBuilder('m')
-//            ->andWhere('m.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
 }

@@ -1,9 +1,12 @@
-<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-    {% if posts|length > 0 %}
-        {% for post in posts %}
-            {{ include('micro_post/_preview_post.html.twig', {post: post}) }}
-        {% endfor %}
-    {% else %}
-        There's nothing here yet!
-    {% endif %}
-</div>
+
+{% if posts|length > 0 %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+                {% for post in posts %}
+                    {{ include('micro_post/_preview_post.html.twig', {post: post}) }}
+                {% endfor %}
+        </div>
+        {{ knp_pagination_render(posts) }}
+{% else %}
+        <div>There's nothing here yet!</div>
+{% endif %}
+
