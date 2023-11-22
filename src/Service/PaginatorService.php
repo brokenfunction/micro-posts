@@ -16,7 +16,7 @@ class PaginatorService
         return $this->paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            6
+            9
         );
     }
 }

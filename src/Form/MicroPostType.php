@@ -5,10 +5,10 @@ namespace App\Form;
 use App\Entity\MicroPost;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class MicroPostType extends AbstractType
 {
@@ -16,7 +16,12 @@ class MicroPostType extends AbstractType
     {
         $builder
             ->add('title')
-            ->add('text', TextareaType::class)
+            ->add('text', CKEditorType::class, [
+                'config' => [
+                    'uiColor' => '#ffffff',
+                    'toolbar' => 'standard'
+                ],
+            ])
             ->add('extraPrivacy');
     }
 
