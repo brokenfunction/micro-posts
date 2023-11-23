@@ -22,15 +22,27 @@
                class="font-light text-sm text-red-500 dark:text-red-500">Remove</a>
         </div>
     {% endif %}
-    <div class="mt-4" id="like">
+    <div class="mt-4 relative" id="like">
         {% if post.likedBy.contains(app.user) %}
-            <a href="{{ path('app_unlike', { id: post.id }) }}">
+            <a data-popover-target="likedBy" data-popover-placement="right" href="{{ path('app_unlike', { id: post.id }) }}">
                 Unlike&#128148; <span class="px-2 rounded-md bg-gray-200 dark:bg-gray-700">{{ post.likedBy.count }}</span>
             </a>
         {% else %}
-            <a href="{{ path('app_like', { id: post.id }) }}">
+            <a data-popover-target="likedBy" data-popover-placement="right" href="{{ path('app_like', { id: post.id }) }}">
                 Like&#10084; <span class="px-2 rounded-md bg-gray-200 dark:bg-gray-700">{{ post.likedBy.count }}</span>
             </a>
         {% endif %}
+        <div data-popover id="likedBy" role="tooltip" class="absolute z-10 invisible inline-block w-64 text-sm text-gray-500 transition-opacity duration-300 bg-white border border-gray-200 rounded-lg shadow-sm opacity-0 dark:text-gray-400 dark:border-gray-600 dark:bg-gray-800">
+            <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 rounded-t-lg dark:border-gray-600 dark:bg-gray-700">
+                <h3 class="font-semibold text-gray-900 dark:text-white">Liked by:</h3>
+            </div>
+            <div class="px-3 py-2">
+                <ul>
+                    {% for user in  post.likedBy %}
+                        <li><a href="{{ path('app_profile', { id: user.id }) }}">{{ user.userProfile.name ?? user.email }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
