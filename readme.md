@@ -65,5 +65,3 @@ The project has next features:
 ## License
 
 The project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-![](C:/Users/rzviazok/Desktop/staubli/Screenshot_1.png)
