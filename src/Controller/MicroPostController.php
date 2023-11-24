@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class MicroPostController extends AbstractController
 {
-    #[Route('/micro-post', name: 'app_micro_post')]
+    #[Route('/', name: 'app_micro_post')]
     public function index(Request $request, PaginatorService $paginatorService, MicroPostRepository $posts): Response
     {
         return $this->render('micro_post/index.html.twig', [
@@ -27,7 +27,7 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-    #[Route('/micro-post/top-liked', name: 'app_micro_post_topliked')]
+    #[Route('/top-liked', name: 'app_micro_post_topliked')]
     public function topLiked(Request $request, PaginatorService $paginatorService, MicroPostRepository $posts): Response
     {
         return $this->render('micro_post/top_liked.html.twig', [
@@ -35,7 +35,7 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-    #[Route('/micro-post/follows', name: 'app_micro_post_follows')]
+    #[Route('/follows', name: 'app_micro_post_follows')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function follows(MicroPostRepository $posts, PaginatorService $paginatorService, Request $request): Response
     {
@@ -46,7 +46,7 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-    #[Route('/micro-post/{post}', name: 'app_micro_post_show')]
+    #[Route('/{post}', name: 'app_micro_post_show')]
     #[IsGranted(MicroPost::VIEW, 'post')]
     public function showOne(MicroPost $post, Request $request, CommentRepository $comments): Response
     {
@@ -67,7 +67,7 @@ class MicroPostController extends AbstractController
         ]);
     }
 
-    #[Route('/micro-post/add', name: 'app_micro_post_add', priority: 2)]
+    #[Route('/add', name: 'app_micro_post_add', priority: 2)]
     #[IsGranted('ROLE_VERIFIED')]
     public function add(Request $request, MicroPostRepository $posts): Response
     {
@@ -91,7 +91,7 @@ class MicroPostController extends AbstractController
     }
 
 
-    #[Route('/micro-post/remove/{post}', name: 'app_micro_post_remove')]
+    #[Route('/remove/{post}', name: 'app_micro_post_remove')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function remove(MicroPost $post, MicroPostRepository $posts): Response
     {
@@ -103,7 +103,7 @@ class MicroPostController extends AbstractController
         return $this->redirectToRoute('app_micro_post');
     }
 
-    #[Route('/micro-post/edit/{post}', name: 'app_micro_post_edit')]
+    #[Route('/edit/{post}', name: 'app_micro_post_edit')]
     #[IsGranted(MicroPost::EDIT, 'post')]
     public function edit(MicroPost $post, Request $request, MicroPostRepository $posts): Response
     {
@@ -127,7 +127,7 @@ class MicroPostController extends AbstractController
             ]);
     }
 
-    #[Route('/micro-post/comment/{post}', name: 'app_micro_post_comment')]
+    #[Route('/comment/{post}', name: 'app_micro_post_comment')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function addComment(MicroPost $post, Request $request, CommentRepository $comments): Response
     {
@@ -152,7 +152,7 @@ class MicroPostController extends AbstractController
             ]);
     }
 
-    #[Route('/micro-post/edit/comment/{comment}', name: 'app_micro_post_edit_comment')]
+    #[Route('/edit/comment/{comment}', name: 'app_micro_post_edit_comment')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function editComment(Comment $comment, Request $request, CommentRepository $comments): Response
     {
@@ -181,7 +181,7 @@ class MicroPostController extends AbstractController
             ]);
     }
 
-    #[Route('/micro-post/remove/comment/{comment}', name: 'app_micro_post_remove_comment')]
+    #[Route('/remove/comment/{comment}', name: 'app_micro_post_remove_comment')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function deleteComment(Comment $comment, CommentRepository $comments): Response
     {
